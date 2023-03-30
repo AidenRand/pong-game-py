@@ -12,6 +12,9 @@ def move_ball():
     if moving_ball.bottom >= screen_height or moving_ball.top <= 0:
         y_speed *= -1
 
+    if moving_ball.left >= screen_width or moving_ball.right <= 0:
+        x_speed *= -1
+
     pygame.draw.rect(screen, white, moving_ball)
 
 
@@ -25,7 +28,8 @@ screen_width = 1000
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pong")
-screen.fill((5, 5, 5))
+background = (5, 5, 5)
+screen.fill(background)
 
 white = (200, 200, 200)
 
@@ -39,13 +43,13 @@ def draw_dotted_line():
             pygame.draw.line(screen, (5, 5, 5), (499, i - 10), (499, i), 5)
 
 
-draw_dotted_line()
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
 
+    screen.fill((5, 5, 5))
+    draw_dotted_line()
     move_ball()
-    pygame.display.flip()
     clock.tick(60)
+    pygame.display.flip()
