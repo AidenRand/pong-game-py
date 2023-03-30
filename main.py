@@ -18,21 +18,25 @@ white = (200, 200, 200)
 
 
 def move_paddle():
-    global p1, p2
-    pygame.draw.rect(screen, (white), (p1, p2, 10, 30))
+    global p1
+    player_paddle = pygame.Rect(10, p1, 10, 40)
+    pygame.draw.rect(screen, white, player_paddle)
+
+    # Paddle collision with top and bottom of window
+    if player_paddle.bottom >= screen_height:
+        p1 += -10
+    elif player_paddle.top <= 0:
+        p1 -= -10
+
+    # Control paddle with up and down arrows
     key_input = pygame.key.get_pressed()
-    if key_input[pygame.K_LEFT]:
-        p1 -= 5
-    if key_input[pygame.K_RIGHT]:
-        p1 += 5
     if key_input[pygame.K_UP]:
-        p2 -= 5
+        p1 -= 10
     if key_input[pygame.K_DOWN]:
-        p2 += 5
+        p1 += 10
 
 
-p1 = 10
-p2 = 10
+p1 = 20
 
 
 # Draw vertical dotted line in center of screen
