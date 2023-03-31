@@ -1,10 +1,6 @@
 import pygame
 import ball
 
-moving_ball = ball.moving_ball
-x_speed = ball.x_speed
-y_speed = ball.y_speed
-
 pygame.init()
 clock = pygame.time.Clock()
 screen_width = 1000
@@ -17,26 +13,47 @@ screen.fill(background)
 white = (200, 200, 200)
 
 
-def move_paddle():
-    global p1
-    player_paddle = pygame.Rect(10, p1, 10, 40)
-    pygame.draw.rect(screen, white, player_paddle)
+def stop_paddle():
+    global p1, player_paddle1, player_paddle2
+    pygame.draw.rect(screen, white, player_paddle1)
+    pygame.draw.rect(screen, white, player_paddle2)
 
     # Paddle collision with top and bottom of window
-    if player_paddle.bottom >= screen_height:
+    if player_paddle1.bottom >= screen_height:
         p1 += -10
-    elif player_paddle.top <= 0:
+    elif player_paddle1.top <= 0:
         p1 -= -10
 
-    # Control paddle with up and down arrows
-    key_input = pygame.key.get_pressed()
-    if key_input[pygame.K_UP]:
-        p1 -= 10
-    if key_input[pygame.K_DOWN]:
-        p1 += 10
+    if player_paddle2.bottom >= screen_height:
+        p1 += -10
+    elif player_paddle2.top <= 0:
+        p1 -= -10
 
 
 p1 = 20
+p2 = 20
+player_paddle1 = pygame.Rect(10, p1, 10, 40)
+player_paddle2 = pygame.Rect(980, p2, 10, 40)
+
+
+# Make ball move
+def move_ball():
+    global x_speed, y_speed
+    moving_ball.x += x_speed
+    moving_ball.y += y_speed
+
+    # Collision with top and bottom screen
+    if moving_ball.bottom >= screen_height or moving_ball.top <= 0:
+        y_speed *= -1
+
+    if moving_ball.left >= screen_width or moving_ball.right <= 0:
+        x_speed *= -1
+
+    pygame.draw.rect(screen, white, moving_ball)
+
+
+moving_ball = pygame.Rect(494, 290, 10, 10)
+x_speed, y_speed = 6, 5
 
 
 # Draw vertical dotted line in center of screen
@@ -54,8 +71,22 @@ while True:
             pygame.quit()
 
     screen.fill((5, 5, 5))
+
+    stop_paddle()
+
+    key_input1 = pygame.key.get_pressed()
+    if key_input1[pygame.K_w]:
+        player_paddle1.y -= 10
+    if key_input1[pygame.K_s]:
+        player_paddle1.y += 10
+
+    key_input2 = pygame.key.get_pressed()
+    if key_input2[pygame.K_UP]:
+        player_paddle2.y -= 10
+    if key_input2[pygame.K_DOWN]:
+        player_paddle2.y += 10
+
     draw_dotted_line()
-    ball.move_ball()
-    move_paddle()
+    move_ball()
     clock.tick(60)
     pygame.display.flip()
