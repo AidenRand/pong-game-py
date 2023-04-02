@@ -43,17 +43,22 @@ def move_ball():
     moving_ball.y += y_speed
 
     # Collision with top and bottom screen
-    if moving_ball.bottom >= screen_height or moving_ball.top <= 0:
-        y_speed *= -1
+    if moving_ball.bottom >= screen_height:
+        y_speed -= 4
 
-    if moving_ball.left >= screen_width or moving_ball.right <= 0:
-        x_speed *= -1
+    elif moving_ball.top <= 0:
+        y_speed += 4
+
+    if moving_ball.left >= screen_width:
+        x_speed -= 5
+    elif moving_ball.right <= 0:
+        x_speed += 5
 
     pygame.draw.rect(screen, white, moving_ball)
 
 
 moving_ball = pygame.Rect(494, 290, 10, 10)
-x_speed, y_speed = 6, 5
+x_speed, y_speed = 4, 4
 
 
 # Draw vertical dotted line in center of screen
@@ -86,15 +91,15 @@ while True:
     if key_input2[pygame.K_DOWN]:
         player_paddle2.y += 10
 
-    # Reverse direction when ball collides with wall
+        # Reverse direction when ball collides with paddle1
     collision_tolerance = 10
     if moving_ball.colliderect(player_paddle1):
-        if abs(player_paddle1.right - moving_ball.left) <= collision_tolerance:
-            x_speed *= 1
-        if abs(player_paddle1.top - moving_ball.bottom) <= collision_tolerance:
-            y_speed *= 1
-        if abs(player_paddle1.bottom - moving_ball.top) <= collision_tolerance:
-            y_speed *= 1
+        if abs(player_paddle1.right - moving_ball.left) < collision_tolerance:
+            x_speed *= -1
+
+    if moving_ball.colliderect(player_paddle2):
+        if abs(player_paddle2.left - moving_ball.right) < collision_tolerance:
+            x_speed *= -1
 
     draw_dotted_line()
     move_ball()
