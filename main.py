@@ -14,20 +14,20 @@ white = (200, 200, 200)
 
 
 def stop_paddle():
-    global p1, player_paddle1, player_paddle2
+    global p1, p2, player_paddle1, player_paddle2
     pygame.draw.rect(screen, white, player_paddle1)
     pygame.draw.rect(screen, white, player_paddle2)
 
     # Paddle collision with top and bottom of window
     if player_paddle1.bottom >= screen_height:
-        p1 += -10
+        player_paddle1.y -= 10
     elif player_paddle1.top <= 0:
-        p1 -= -10
+        player_paddle1.y += 10
 
     if player_paddle2.bottom >= screen_height:
-        p1 += -10
+        player_paddle2.y -= 10
     elif player_paddle2.top <= 0:
-        p1 -= -10
+        player_paddle2.y = 10
 
 
 p1 = 20
@@ -72,21 +72,32 @@ while True:
 
     screen.fill((5, 5, 5))
 
-    stop_paddle()
-
+    # Control the first player paddle with w and s
     key_input1 = pygame.key.get_pressed()
     if key_input1[pygame.K_w]:
         player_paddle1.y -= 10
     if key_input1[pygame.K_s]:
         player_paddle1.y += 10
 
+    # Control the second player paddle with up and down arrows
     key_input2 = pygame.key.get_pressed()
     if key_input2[pygame.K_UP]:
         player_paddle2.y -= 10
     if key_input2[pygame.K_DOWN]:
         player_paddle2.y += 10
 
+    # Reverse direction when ball collides with wall
+    collision_tolerance = 10
+    if moving_ball.colliderect(player_paddle1):
+        if abs(player_paddle1.right - moving_ball.left) <= collision_tolerance:
+            x_speed *= 1
+        if abs(player_paddle1.top - moving_ball.bottom) <= collision_tolerance:
+            y_speed *= 1
+        if abs(player_paddle1.bottom - moving_ball.top) <= collision_tolerance:
+            y_speed *= 1
+
     draw_dotted_line()
     move_ball()
+    stop_paddle()
     clock.tick(60)
     pygame.display.flip()
