@@ -17,3 +17,7 @@ class Ball:
         print(self.y_speed)
         self.moving_ball.x += self.x_speed
         self.moving_ball.y += self.y_speed
+
+    def reset_ball(self):
+        self.moving_ball = pygame.Rect(0, 0, 10, 10)
+        pygame.draw.rect(self.screen, self.color, self.moving_ball)
