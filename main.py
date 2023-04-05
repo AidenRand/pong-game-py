@@ -15,7 +15,7 @@ screen.fill(background)
 white = (200, 200, 200)
 
 
-# Make player one paddle
+# Make paddles
 def make_paddles():
     global p1, left_paddle, right_paddle
     new_paddle1 = paddles.Paddles(
@@ -34,12 +34,9 @@ right_paddle = pygame.Rect(980, p2, 10, 40)
 # Make ball move
 def move_ball():
     global x_speed, y_speed, x, y
-    x = 0
-    y = 0
 
     new_ball = ball.Ball(screen, screen_height, moving_ball, x_speed, y_speed, white)
-    new_ball.move_ball()
-    new_ball.draw_ball()
+
     if moving_ball.bottom >= screen_height:
         y_speed -= 4
 
@@ -47,12 +44,14 @@ def move_ball():
         y_speed += 4
 
     if moving_ball.right >= screen_width:
-        x_speed -= 4
         new_ball.reset_ball()
 
     elif moving_ball.left <= 0:
-        x_speed += 4
         new_ball.reset_ball()
+
+    else:
+        new_ball.draw_ball()
+        new_ball.move_ball()
 
 
 def reset_ball(ball):
