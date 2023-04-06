@@ -21,12 +21,12 @@ class Paddles:
     def stop_paddles(self):
         # Left paddle collision with top and bottom of screen
         if self.left_paddle.bottom >= self.screen_height:
-            self.left_paddle.y -= 10
+            self.left_paddle.y -= 15
         elif self.left_paddle.top <= 0:
-            self.left_paddle.y += 10
+            self.left_paddle.y += 15
 
         # Right paddle collision with top and bottom of screen
         if self.right_paddle.bottom >= self.screen_height:
-            self.right_paddle.y -= 10
+            self.right_paddle.y -= 15
         elif self.right_paddle.top <= 0:
-            self.right_paddle.y += 10
+            self.right_paddle.y += 15

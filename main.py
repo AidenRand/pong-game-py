@@ -33,44 +33,42 @@ right_paddle = pygame.Rect(980, p2, 10, 40)
 
 # Make ball move
 def move_ball():
-    global x_speed, y_speed, x, y
+    global x_speed, y_speed, x, y, moving_ball
 
-    new_ball = ball.Ball(screen, screen_height, moving_ball, x_speed, y_speed, white)
+    new_ball = ball.Ball(
+        screen, screen_height, moving_ball, x_speed, y_speed, x, y, white
+    )
 
     if moving_ball.bottom >= screen_height:
-        y_speed -= 4
+        y_speed = -4
 
     elif moving_ball.top <= 0:
-        y_speed += 4
+        y_speed = 4
 
     if moving_ball.right >= screen_width:
-        new_ball.reset_ball()
+        moving_ball.x = x
+        moving_ball.y = y
 
     elif moving_ball.left <= 0:
-        new_ball.reset_ball()
+        moving_ball.x = x
+        moving_ball.y = y
 
-    else:
-        new_ball.draw_ball()
-        new_ball.move_ball()
-
-
-def reset_ball(ball):
-    moving_ball = pygame.Rect(0, 0, 10, 10)
-    return moving_ball
+    new_ball.draw_ball()
+    new_ball.move_ball()
 
 
 x, y = 494, 290
 moving_ball = pygame.Rect(x, y, 10, 10)
-x_speed, y_speed = 4, 4
+x_speed, y_speed = 6, 4
 
 
 # Draw vertical dotted line in center of screen
 def draw_dotted_line():
     for i in range(32, 590, 5):
         if i % 2 == 0:
-            pygame.draw.line(screen, white, (499, i - 10), (499, i), 5)
+            pygame.draw.line(screen, white, (499, i - 10), (499, i), 3)
         if i % 2 != 0:
-            pygame.draw.line(screen, (5, 5, 5), (499, i - 10), (499, i), 5)
+            pygame.draw.line(screen, (5, 5, 5), (499, i - 10), (499, i), 3)
 
 
 while True:
@@ -83,16 +81,16 @@ while True:
     # Control the first player paddle with w and s
     key_input1 = pygame.key.get_pressed()
     if key_input1[pygame.K_w]:
-        left_paddle.y -= 10
+        left_paddle.y -= 15
     if key_input1[pygame.K_s]:
-        left_paddle.y += 10
+        left_paddle.y += 15
 
     # Control the second player paddle with up and down arrows
     key_input2 = pygame.key.get_pressed()
     if key_input2[pygame.K_UP]:
-        right_paddle.y -= 10
+        right_paddle.y -= 15
     if key_input2[pygame.K_DOWN]:
-        right_paddle.y += 10
+        right_paddle.y += 15
 
         # Reverse direction when ball collides with paddle1
     collision_tolerance = 10

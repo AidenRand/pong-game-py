@@ -2,16 +2,20 @@ import pygame
 
 
 class Ball:
-    def __init__(self, screen, screen_height, moving_ball, x_speed, y_speed, color):
+    def __init__(
+        self, screen, screen_height, moving_ball, x_speed, y_speed, x, y, color
+    ):
         self.screen = screen
         self.screen_height = screen_height
         self.moving_ball = moving_ball
         self.x_speed = x_speed
         self.y_speed = y_speed
+        self.x = x
+        self.y = y
         self.color = color
 
     def reset_ball(self):
-        self.moving_ball = pygame.Rect(494, 290, 10, 10)
+        self.moving_ball = pygame.Rect(self.x, self.y, 10, 10)
         pygame.draw.rect(self.screen, self.color, self.moving_ball)
 
     def draw_ball(self):
