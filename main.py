@@ -25,33 +25,31 @@ def make_paddles():
     new_paddle1.stop_paddles()
 
 
-p1 = 20
-p2 = 20
+p1 = 280
+p2 = 280
 left_paddle = pygame.Rect(10, p1, 10, 40)
 right_paddle = pygame.Rect(980, p2, 10, 40)
 
 
 # Make ball move
 def move_ball():
-    global x_speed, y_speed, x, y, moving_ball
+    global x_speed, y_speed, x, y
 
     new_ball = ball.Ball(
         screen, screen_height, moving_ball, x_speed, y_speed, x, y, white
     )
 
     if moving_ball.bottom >= screen_height:
-        y_speed = -4
+        y_speed = -5
 
     elif moving_ball.top <= 0:
-        y_speed = 4
+        y_speed = 5
 
-    if moving_ball.right >= screen_width:
-        moving_ball.x = x
-        moving_ball.y = y
-
-    elif moving_ball.left <= 0:
-        moving_ball.x = x
-        moving_ball.y = y
+    if moving_ball.right >= screen_width or moving_ball.left <= 0:
+        start_input = pygame.key.get_pressed()
+        if start_input[pygame.K_SPACE]:
+            moving_ball.x = x
+            moving_ball.y = y
 
     new_ball.draw_ball()
     new_ball.move_ball()
@@ -59,7 +57,7 @@ def move_ball():
 
 x, y = 494, 290
 moving_ball = pygame.Rect(x, y, 10, 10)
-x_speed, y_speed = 6, 4
+x_speed, y_speed = 10, 5
 
 
 # Draw vertical dotted line in center of screen
@@ -69,6 +67,9 @@ def draw_dotted_line():
             pygame.draw.line(screen, white, (499, i - 10), (499, i), 3)
         if i % 2 != 0:
             pygame.draw.line(screen, (5, 5, 5), (499, i - 10), (499, i), 3)
+
+
+# def game_logic():
 
 
 while True:
