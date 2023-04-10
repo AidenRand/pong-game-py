@@ -3,7 +3,6 @@ import time
 import ball
 import paddles
 
-
 pygame.init()
 clock = pygame.time.Clock()
 screen_width = 1000
@@ -14,6 +13,13 @@ background = (5, 5, 5)
 screen.fill(background)
 
 white = (200, 200, 200)
+
+
+def make_borders():
+    top_border = pygame.Rect(0, 0, 1000, 5)
+    bottom_border = pygame.Rect(0, 595, 1000, 5)
+    pygame.draw.rect(screen, white, top_border)
+    pygame.draw.rect(screen, white, bottom_border)
 
 
 # Make paddles
@@ -28,6 +34,7 @@ def make_paddles():
 
 p1 = 280
 p2 = 280
+# Create left and right paddle
 left_paddle = pygame.Rect(10, p1, 10, 40)
 right_paddle = pygame.Rect(980, p2, 10, 40)
 
@@ -53,10 +60,10 @@ def make_ball():
         screen, screen_height, moving_ball, x_speed, y_speed, x, y, white
     )
 
-    if moving_ball.bottom >= screen_height:
+    if moving_ball.bottom >= 595:
         y_speed = -3
 
-    elif moving_ball.top <= 0:
+    elif moving_ball.top <= 5:
         y_speed = 3
 
     # Reset the ball if it goes off screen
@@ -116,18 +123,18 @@ while True:
     # Control the first player paddle with w and s
     key_input1 = pygame.key.get_pressed()
     if key_input1[pygame.K_w]:
-        left_paddle.y -= 15
+        left_paddle.y -= 13
     if key_input1[pygame.K_s]:
-        left_paddle.y += 15
+        left_paddle.y += 13
 
     # Control the second player paddle with up and down arrows
     key_input2 = pygame.key.get_pressed()
     if key_input2[pygame.K_UP]:
-        right_paddle.y -= 15
+        right_paddle.y -= 13
     if key_input2[pygame.K_DOWN]:
-        right_paddle.y += 15
+        right_paddle.y += 13
 
-        # Reverse direction when ball collides with paddle1
+    # Reverse direction when ball collides with paddle1
     collision_tolerance = 10
     if moving_ball.colliderect(left_paddle):
         if abs(left_paddle.right - moving_ball.left) < collision_tolerance:
@@ -143,6 +150,7 @@ while True:
         if abs(left_paddle.bottom - moving_ball.top) < collision_tolerance:
             y_speed *= -1
 
+    # Reverse direction when ball collides with paddle 2
     if moving_ball.colliderect(right_paddle):
         if abs(right_paddle.left - moving_ball.right) < collision_tolerance:
             x_speed *= -1
@@ -155,6 +163,7 @@ while True:
         if abs(right_paddle.bottom - moving_ball.top) < collision_tolerance:
             y_speed *= -1
 
+    make_borders()
     draw_dotted_line()
     make_ball()
     make_paddles()
