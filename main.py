@@ -9,8 +9,6 @@ screen_width = 1000
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pong")
-background = (5, 5, 5)
-screen.fill(background)
 
 white = (200, 200, 200)
 
@@ -115,7 +113,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
 
-    screen.fill((5, 5, 5))
+    screen.fill((6, 6, 6))
 
     draw_left_score(str(left_score), text_font, white, 390, 20)
     draw_right_score(str(right_score), text_font, white, 580, 20)
